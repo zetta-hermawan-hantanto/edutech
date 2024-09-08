@@ -1,0 +1,36 @@
+const express = require('express');
+const typeDefs = require('./graphql/typedefs');
+const resolvers = require('./graphql/resolvers');
+const dotenv = require('dotenv');
+const createConnection = require('./database/mongoose');
+const { ApolloServer } = require('apollo-server-express');
+const { makeExecutableSchema } = require('@graphql-tools/schema');
+
+// To be able access the env
+dotenv.config();
+
+// Connect to databases
+createConnection();
+
+// Schema for graphql
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers,
+});
+
+const app = express();
+
+const server = new ApolloServer({ schema });
+
+// Start the server
+async function startServer() {
+  await server.start();
+
+  server.applyMiddleware({ app });
+
+  app.listen({ port: 4000 }, () => {
+    console.log(`Server ready at http://localhost:4000${server.graphqlPath}`);
+  });
+}
+
+startServer();
