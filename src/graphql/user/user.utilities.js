@@ -2,8 +2,8 @@ const ErrorModel = require('../../database/models/error.model');
 const UserModel = require('../../database/models/user.model');
 const SENDING_EMAIL = require('../../utils/emails/email');
 const { ApolloError } = require('apollo-server-express');
-const { ValidateInputSignUp } = require('./user.validator');
-const { HashPassword, VerifyPassword } = require('./user.helper');
+const { ValidateInputSignUp, ValidateInputSignIn } = require('./user.validator');
+const { HashPassword, VerifyPassword, CreateToken } = require('./user.helper');
 
 // Query User
 const GetAllUsers = () => {
@@ -40,7 +40,7 @@ const SignUp = async (parent, { input }, context) => {
 
     const newUser = await UserModel.create(newUserData);
 
-    const link = `http://localhost:4000/registrationConfirmation/${newUser._id}`;
+    const link = `http://localhost:4000/registrationConfirmation/${String(newUser._id)}`;
     await SENDING_EMAIL.REGISTRATION({ name: newUser.name, email: newUser.email, link });
 
     const resultSignUp = {
@@ -61,8 +61,53 @@ const SignUp = async (parent, { input }, context) => {
   }
 };
 
+const SignIn = async (parent, { input }, context) => {
+  try {
+    const { email, password } = input;
+
+    ValidateInputSignIn({ email, password });
+
+    const userFound = await UserModel.findOne({
+      email,
+    });
+
+    if (!userFound) {
+      throw new ApolloError('Email or password is wrong!');
+    }
+
+    const isMatched = await VerifyPassword({ hashedPassword: userFound.password, plainPassword: password });
+
+    if (!isMatched) {
+      throw new ApolloError('Email or password is wrong!');
+    }
+
+    if (!userFound.is_verified) {
+      throw new ApolloError('User is not verified, please verify the email!');
+    }
+
+    const token = CreateToken(String(userFound._id));
+
+    const resultLogin = {
+      message: 'Successfully login!',
+      token,
+    };
+
+    return resultLogin;
+  } catch (error) {
+    console.log(error);
+    await ErrorModel.create({
+      name_function: 'SignIn',
+      parameter_function: JSON.stringify(input),
+      path: 'src/graphql/user/user.utilities.js',
+      error: JSON.stringify(error),
+    });
+    throw new ApolloError(error.message);
+  }
+};
+
 module.exports = {
   GetAllUsers,
   GetUserById,
   SignUp,
+  SignIn,
 };

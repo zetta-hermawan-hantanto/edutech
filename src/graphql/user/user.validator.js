@@ -33,6 +33,21 @@ const ValidateInputSignUp = ({ name, email, password, role }) => {
   }
 };
 
+const ValidateInputSignIn = ({ email, password }) => {
+  if (!email) {
+    throw new ApolloError('Email is required!');
+  }
+
+  if (!password) {
+    throw new ApolloError('Password is required!');
+  }
+
+  if (!validator.isEmail(email)) {
+    throw new ApolloError('Email is not valid!');
+  }
+};
+
 module.exports = {
   ValidateInputSignUp,
+  ValidateInputSignIn,
 };

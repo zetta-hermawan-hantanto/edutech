@@ -1,4 +1,4 @@
-const { GetAllUsers, GetUserById, SignUp } = require('./user.utilities');
+const { GetAllUsers, GetUserById, SignUp, SignIn } = require('./user.utilities');
 
 const UserResolvers = {
   Query: {
@@ -7,6 +7,7 @@ const UserResolvers = {
   },
   Mutation: {
     SignUp,
+    SignIn,
   },
 };
 
