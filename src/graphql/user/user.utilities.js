@@ -26,7 +26,7 @@ const SignUp = async (parent, { input }, context) => {
     });
 
     if (isEmailAvailable) {
-      throw ApolloError('Email have been used by other people!');
+      throw new ApolloError('Email have been used by other people!');
     }
 
     const hashedPassword = await HashPassword(password);

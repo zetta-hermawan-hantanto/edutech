@@ -67,6 +67,8 @@ const VerifyToken = (token) => {
   return id;
 };
 
+
+
 module.exports = {
   HashPassword,
   VerifyPassword,

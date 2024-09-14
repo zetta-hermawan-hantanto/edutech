@@ -18,12 +18,11 @@ createConnection();
 const schema = makeExecutableSchema({
   typeDefs,
   resolvers,
-  context,
 });
 
 const app = express();
 
-const server = new ApolloServer({ schema });
+const server = new ApolloServer({ schema, context });
 
 // Start the server
 async function startServer() {

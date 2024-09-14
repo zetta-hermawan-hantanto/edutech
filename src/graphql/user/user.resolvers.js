@@ -1,6 +1,6 @@
 const { GetAllUsers, GetUserById, SignUp, SignIn } = require('./user.utilities');
 
-const UserResolvers = {
+const UserResolver = {
   Query: {
     GetAllUsers,
     GetUserById,
@@ -11,4 +11,4 @@ const UserResolvers = {
   },
 };
 
-module.exports = UserResolvers;
+module.exports = UserResolver;

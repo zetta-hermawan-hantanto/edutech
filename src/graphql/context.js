@@ -8,10 +8,13 @@ const context = async ({ req }) => {
     const { authorization } = req.headers;
     let userFound = null;
 
-    const userId = VerifyToken(token);
+    if (authorization) {
+      const token = authorization.split(' ')[1];
+      const { id } = VerifyToken(token);
 
-    if (userId !== null) {
-      userFound = await UserModel.findById(userId);
+      if (id) {
+        userFound = await UserModel.findById(id);
+      }
     }
 
     return {

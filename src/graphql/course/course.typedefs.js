@@ -14,6 +14,7 @@ const CourseTypedef = gql`
     category: [String!]
     level: Level
     instructor: User
+    modules: [Module]
     rates: Int
     likes: Int
     enrolledStudents: [User]
@@ -30,7 +31,8 @@ const CourseTypedef = gql`
     description: String
     category: [String!]!
     level: Level
-    tags: [String!]
+    image: String
+    tags: [String!] 
   }
 `;
 
