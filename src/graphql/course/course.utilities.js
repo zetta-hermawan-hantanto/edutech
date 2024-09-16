@@ -1,32 +1,36 @@
 const CourseModel = require('../../database/models/course.model');
 const ErrorModel = require('../../database/models/error.model');
-const { ValidateCreateCourse } = require('./coures.validator');
 const { ApolloError } = require('apollo-server-express');
+const { ValidateInstructor } = require('../../utils/globalValidator/validateInstructor');
+const { ValidateCreateCourse } = require('./course.validator');
 
 const CreateCourse = async (parent, { input }, context) => {
   try {
-    if (!context.user) {
-      throw new ApolloError('You are not authenticated!');
-    }
-
-    if (context.user.role !== 'INSTRUCTOR') {
-      throw new ApolloError('You are not authorized!');
-    }
+    await ValidateInstructor({ context });
 
     const { title, description, category, level, tags } = input;
 
-    ValidateCreateCourse({ title, description, category, level, tags });
+    await ValidateCreateCourse({ title, description, category, level, tags });
 
     const newCourseData = {
       title,
       description,
       category,
       level,
-      tags,
       instructor: context.user._id,
+      modules: [],
+      rates: [],
+      likes: [],
+      enrolledStudents: [],
+      image: 'NOT FOUND',
+      tags,
     };
 
     const newCourse = await CourseModel.create(newCourseData);
+
+    if (!newCourse) {
+      throw new ApolloError('Error when create course!');
+    }
 
     return newCourse;
   } catch (error) {

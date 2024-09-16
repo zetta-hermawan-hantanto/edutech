@@ -15,8 +15,8 @@ const CourseTypedef = gql`
     level: Level
     instructor: User
     modules: [Module]
-    rates: Int
-    likes: Int
+    rates: [Rate]
+    likes: [User]
     enrolledStudents: [User]
     image: String
     tags: [String!]

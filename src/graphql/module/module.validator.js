@@ -101,7 +101,7 @@ const ValidateWeightModule = async ({ weight, parent_course }) => {
 
     let isWeightValid;
 
-    if (!oldModules || oldModules.length < 1) {
+    if (oldModules.length < 1) {
       return (isWeightValid = weight <= 100);
     }
 
