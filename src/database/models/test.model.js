@@ -5,7 +5,7 @@ const testSchema = new Schema(
   {
     name_test: { type: String, required: true },
     description_test: { type: String, required: true },
-    type_test: { type: String, enum: ['MULTIPLE_CHOICE', 'TEKS', 'CODE', 'TRUE/FALSE'] },
+    type_test: { type: String, enum: ['MULTIPLE_CHOICE', 'TEKS', 'CODE'] },
     students: [
       {
         student_id: { type: Schema.Types.ObjectId, ref: 'user' },

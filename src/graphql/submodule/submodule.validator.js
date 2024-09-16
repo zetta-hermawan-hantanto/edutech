@@ -142,7 +142,13 @@ const ValidateUniqueTitleSubmodule = async ({ title_submodule, parent_module }) 
       return isUniqueTitle;
     }
 
-    return (isUniqueTitle = oldSubmodules.some((oldSubmodule) => oldSubmodule.title_submodule === title_submodule));
+    oldSubmodules.forEach((oldSubmodule) => {
+      if (oldSubmodule.title_submodule === title_submodule) {
+        isUniqueTitle = false;
+      }
+    });
+
+    return isUniqueTitle;
   } catch (error) {
     console.log(error);
     await ErrorModel.create({

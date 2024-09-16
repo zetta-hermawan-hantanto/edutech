@@ -56,11 +56,11 @@ const ValidateTitleModuleUnique = async ({ title_module, parent_course }) => {
 
     const oldModules = course.modules ? course.modules : [];
 
-    if (!oldModules || oldModules.length < 1) {
-      return;
-    }
-
     let isUnique = true;
+
+    if (oldModules.length < 1) {
+      return isUnique;
+    }
 
     oldModules.forEach((oldModule) => {
       if (oldModule.title_module && oldModule.title_module === title_module) {

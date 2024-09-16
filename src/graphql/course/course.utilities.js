@@ -1,7 +1,7 @@
 const CourseModel = require('../../database/models/course.model');
 const ErrorModel = require('../../database/models/error.model');
 const { ApolloError } = require('apollo-server-express');
-const { ValidateInstructor } = require('../../utils/globalValidator/validateInstructor');
+const { ValidateInstructor } = require('../../utils/globalValidator/validateUser');
 const { ValidateCreateCourse } = require('./course.validator');
 
 const CreateCourse = async (parent, { input }, context) => {

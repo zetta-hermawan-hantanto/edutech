@@ -2,6 +2,7 @@ const { gql } = require('apollo-server-express');
 
 const SubmoduleTypedef = gql`
   type Submodule {
+    _id: ID
     title_submodule: String
     description_submodule: String
     video_material: [String]

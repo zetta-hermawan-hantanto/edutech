@@ -3,7 +3,7 @@ const ErrorModel = require('../../database/models/error.model');
 const ModuleModel = require('../../database/models/module.model');
 const { ApolloError } = require('apollo-server-express');
 const { ValidateCreateModuleParams, ValidateTitleModuleUnique, ValidateWeightModule } = require('./module.validator');
-const { ValidateInstructor } = require('../../utils/globalValidator/validateInstructor');
+const { ValidateInstructor } = require('../../utils/globalValidator/validateUser');
 
 const CreateModule = async (parent, { input }, context) => {
   try {
